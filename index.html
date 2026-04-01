@@ -89,6 +89,16 @@ body {
     font-size: 12px;
     color: #8b949e;
 }
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.clue {
+    margin-top: 30px;
+    color: #aaa;
+}
 </style>
 </head>
 
@@ -98,47 +108,62 @@ body {
     <p>My very own demonlist which combines demons from every difficulty for fun.</p>
 </div>
 
-  <p>Find the hidden code to unlock the next one.</p>
+<h1>🔍 Code Hunt</h1>
+<p>Solve the clues to progress.</p>
 
-<div class="box">
-    <input type="text" id="codeInput" placeholder="Enter code...">
-    <button onclick="checkCode()">Submit</button>
-</div>
+<input type="text" id="codeInput" placeholder="cheat plz">
+<button onclick="checkCode()">plz cheat</button>
 
 <p id="message"></p>
 
-<!-- Clues -->
-<div class="clue">
-    First clue: The code is hidden in the page... inspect carefully 👀
+<div class="clue" id="clueText">
+yt link
 </div>
 
-<!-- Hidden Codes -->
-<!-- CODE 1: shadow -->
-<!-- CODE 2: eclipse -->
-<!-- CODE 3: finalkey -->
-
 <script>
-let currentLevel = 1;
+// Encoded answers (base64 so they aren't readable in inspect easily)
+const answers = [
+    atob("c2hhZG93"),   // shadow
+    atob("ZWNsaXBzZQ=="), // eclipse
+    atob("ZmluYWxrZXk=")  // finalkey
+];
+
+let level = 0;
 
 function checkCode() {
     const input = document.getElementById("codeInput").value.toLowerCase();
     const message = document.getElementById("message");
+    const clue = document.getElementById("clueText");
 
-    if (currentLevel === 1 && input === "shadow") {
-        message.innerHTML = "✅ Correct! Next clue: What blocks the sun?";
-        currentLevel++;
-    }
-    else if (currentLevel === 2 && input === "eclipse") {
-        message.innerHTML = "✅ Nice! Final clue: The last key...";
-        currentLevel++;
-    }
-    else if (currentLevel === 3 && input === "finalkey") {
-        message.innerHTML = "🎉 You win! You found all the codes.";
-    }
-    else {
-        message.innerHTML = "❌ Wrong code. Try again.";
+    if (input === answers[level]) {
+        level++;
+
+        if (level === 1) {
+            message.innerHTML = "yay cheat!";
+            clue.innerHTML = "Clue 2: What blocks the sun?";
+        }
+        else if (level === 2) {
+            message.innerHTML = "good job";
+            clue.innerHTML = "Clue 3: The last key...";
+        }
+        else {
+            message.innerHTML = "FUCK YES ALL CHEATS!!";
+            clue.innerHTML = "";
+        }
+    } else {
+        message.innerHTML = "no cheat.";
     }
 }
+
+// Disable right click
+window.addEventListener('contextmenu', e => e.preventDefault());
+
+// Detect DevTools (basic)
+setInterval(() => {
+    if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
+        document.body.innerHTML = "<h1>😈 No cheating.</h1>";
+    }
+}, 1000);
 </script>
 
 </body>
