@@ -158,10 +158,22 @@ function checkCode() {
 // Disable right click
 window.addEventListener('contextmenu', e => e.preventDefault());
 
-// Detect DevTools (basic)
+let devtoolsOpen = false;
+
 setInterval(() => {
-    if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
-        document.body.innerHTML = "<h1>😈 No cheating.</h1>";
+    const threshold = 160;
+
+    if (
+        window.outerWidth - window.innerWidth > threshold ||
+        window.outerHeight - window.innerHeight > threshold
+    ) {
+        if (!devtoolsOpen) {
+            devtoolsOpen = true;
+            console.log("DevTools detected");
+            alert("🤨 hey... no cheating");
+        }
+    } else {
+        devtoolsOpen = false;
     }
 }, 1000);
 </script>
