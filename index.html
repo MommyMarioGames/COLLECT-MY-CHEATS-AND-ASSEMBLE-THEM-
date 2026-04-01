@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COLLECT MY CHEATS AND ASSEMBLE THEM!! COLLECT MY CHEATS AND ASSEMBLE THEM!! COLLECT MY CHEATS AND ASSEMBLE THEM!! COLLECT MY CHEATS AND ASSEMBLE THEM!! </title>
+<title>COLLECT MY CHEATS AND ASSEMBLE THEM!!</title>
 <style>
 body {
     font-family: "Comic Sans MS", Arial, sans-serif;
@@ -12,170 +12,66 @@ body {
     color: #e6edf3;
 }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 30px;
-    border-bottom: 1px solid #1f2933;
-}
-
-.navbar .logo {
-    font-weight: bold;
-    color: #58a6ff;
-}
-
-.navbar a {
-    margin-left: 20px;
-    text-decoration: none;
-    color: #c9d1d9;
-}
-
-.hero {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.container {
-    display: flex;
-    gap: 40px;
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* LEFT */
-.rules {
-    flex: 2;
-}
-
-/* RIGHT */
-.sidegoon {
-    flex: 1;
-}
-
-.card {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: #11161c;
-    border: 1px solid #1f2933;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 15px;
-}
-
-.avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #222; /* placeholder if no image */
-    flex-shrink: 0;
-}
-
-.avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.name {
-    font-weight: bold;
-    color: #79c0ff;
-}
-
-.sub {
-    font-size: 12px;
-    color: #8b949e;
-}
-
-input, button {
-    padding: 10px;
-    font-size: 16px;
-}
-
-.clue {
-    margin-top: 30px;
-    color: #aaa;
-}
+.hero { text-align: center; padding: 40px 20px; }
+input, button { padding: 10px; font-size: 16px; margin-top: 10px; }
+.clue { margin-top: 20px; color: #aaa; }
+#message { margin-top: 15px; font-weight: bold; }
 </style>
 </head>
-
 <body>
+
 <div class="hero">
-    <h1>COLLECT MY CHEATS AND ASSEMBLE THEM!! COLLECT MY CHEATS AND ASSEMBLE THEM!! COLLECT MY CHEATS AND ASSEMBLE THEM!! COLLECT MY CHEATS AND ASSEMBLE THEM!! COLLECT MY CHEATS AND ASSEMBLE THEM!! </h1>
-    <p>My very own demonlist which combines demons from every difficulty for fun.</p>
-</div>
+    <h1>COLLECT MY CHEATS AND ASSEMBLE THEM!!</h1>
+    <p>Marlow Cheat Hunt!</p>
 
-<h1>🔍 Code Hunt</h1>
-<p>Solve the clues to progress.</p>
+    <!-- Level input -->
+    <input type="text" id="codeInput" placeholder="Enter code">
+    <button onclick="checkCode()">Submit</button>
 
-<input type="text" id="codeInput" placeholder="cheat plz">
-<button onclick="checkCode()">plz cheat</button>
-
-<p id="message"></p>
-
-<div class="clue" id="clueText">
-yt link
+    <p id="message"></p>
+    <div class="clue" id="clueText">test</div>
 </div>
 
 <script>
-// Encoded answers (base64 so they aren't readable in inspect easily)
-const answers = [
-    atob("c2hhZG93"),   // shadow
-    atob("ZWNsaXBzZQ=="), // eclipse
-    atob("ZmluYWxrZXk=")  // finalkey
-];
+const API_URL = "https://marlow-cheat-hunt.onrender.com";
 
-let level = 0;
+let level = 1;
 
-function checkCode() {
-    const input = document.getElementById("codeInput").value.toLowerCase();
+async function checkCode() {
+    const input = document.getElementById("codeInput").value;
     const message = document.getElementById("message");
     const clue = document.getElementById("clueText");
 
-    if (input === answers[level]) {
-        level++;
+    try {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ level, input })
+        });
 
-        if (level === 1) {
-            message.innerHTML = "yay cheat!";
-            clue.innerHTML = "Clue 2: What blocks the sun?";
+        const data = await res.json();
+
+        if (data.success) {
+            level++;
+            message.innerText = "good job";
+            
+            // Update clues for each level
+            if (level === 2) clue.innerText = "Clue 2: ";
+            else if (level === 3) clue.innerText = "Clue 3:";
+            else {
+                clue.innerText = "";
+                message.innerText = "cheats collected!";
+            }
+
+            document.getElementById("codeInput").value = "";
+        } else {
+            message.innerText = "WRONG!!";
         }
-        else if (level === 2) {
-            message.innerHTML = "good job";
-            clue.innerHTML = "Clue 3: The last key...";
-        }
-        else {
-            message.innerHTML = "FUCK YES ALL CHEATS!!";
-            clue.innerHTML = "";
-        }
-    } else {
-        message.innerHTML = "no cheat.";
+    } catch (err) {
+        console.error(err);
+        message.innerText = "if you see this dm marlow plz";
     }
 }
-
-// Disable right click
-window.addEventListener('contextmenu', e => e.preventDefault());
-
-let devtoolsOpen = false;
-
-setInterval(() => {
-    const threshold = 160;
-
-    if (
-        window.outerWidth - window.innerWidth > threshold ||
-        window.outerHeight - window.innerHeight > threshold
-    ) {
-        if (!devtoolsOpen) {
-            devtoolsOpen = true;
-            console.log("DevTools detected");
-            alert("🤨 hey... no cheating");
-        }
-    } else {
-        devtoolsOpen = false;
-    }
-}, 1000);
 </script>
 
 </body>
