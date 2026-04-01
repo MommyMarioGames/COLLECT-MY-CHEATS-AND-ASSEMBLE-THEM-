@@ -1,22 +1,23 @@
 // server.js
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
 
 const app = express();
-app.use(bodyParser.json());
-app.use(cors()); // allow requests from your front-end
+app.use(cors());
+app.use(express.json());
 
-const codes = ["apple", "shadow", "finalboss"]; // secret codes
+const codes = ["shadow", "eclipse", "finalkey"]; // your real codes
 
 app.post("/check", (req, res) => {
     const { level, input } = req.body;
-    if (codes[level] && codes[level] === input) {
+    if (!level || !input) return res.json({ success: false });
+    const correct = codes[level - 1];
+    if (input.toLowerCase() === correct.toLowerCase()) {
         res.json({ success: true });
     } else {
         res.json({ success: false });
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server running on port ${port}`));
