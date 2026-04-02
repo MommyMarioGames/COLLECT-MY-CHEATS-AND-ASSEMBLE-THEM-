@@ -21,63 +21,10 @@ input, button { padding: 10px; font-size: 16px; margin-top: 10px; }
 <body>
 
 <div class="hero">
-    <h1>COLLECT MY CHEATS AND ASSEMBLE THEM!!</h1>
-    <p>marlow cheat hunt</p>
+    <h1>Thanks for playing!</h1>
+    <p>marlow cheat hunt (mario april fools 26')</p>
     <img src="backend/marlowhunt.png">
     <hr>
-    
-    <input type="text" id="codeInput" placeholder="Enter code">
-    <button onclick="checkCode()">Submit</button>
-
-    <p id="message"></p>
-    <div class="clue" id="clueText">https://youtu.be/z8cqg2naLp4</div>
-</div>
-
-<script>
-const API_URL = "https://marlow-cheat-hunt.onrender.com/check";
-
-let level = 1;
-
-async function checkCode() {
-    const input = document.getElementById("codeInput").value;
-    const message = document.getElementById("message");
-    const clue = document.getElementById("clueText");
-
-    try {
-        const res = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ level, input })
-        });
-
-        const data = await res.json();
-
-        if (data.success) {
-            level++;
-            message.innerText = "good job";
-            
-   // Update clues for each level
-            if (level === 2) clue.innerText = "Clue 2: dm marlowfanacc987 on Twitter for an awesome surprise";
-            else if (level === 3) clue.innerText = "Clue 3: win three games of sword and upload it unlisted if you want";
-            else if (level === 4) clue.innerText = "Clue 4: https://www.youtube.com/watch?v=kYMQaZVx31U new captions";
-            else if (level === 5) clue.innerText = "Clue 5: https://playcanv.as/p/H1oXfI0e/ 10 score NOW and send to marlowfanacc on twitter";
-            else if (level === 6) clue.innerText = "Clue 6: you summoned chicken to come fight marlow.";
-            else if (level === 7) clue.innerText = "https://youtu.be/n3cQkWOY-x0";
-            else {
-                clue.innerText = "";
-                message.innerText = "wheres marlow? (you completed the codes)";
-            }
-
-            document.getElementById("codeInput").value = "";
-        } else {
-            message.innerText = "WRONG!!";
-        }
-    } catch (err) {
-        console.error(err);
-        message.innerText = "if you see this dm marlow plz";
-    }
-}
-</script>
 
 </body>
 </html>
