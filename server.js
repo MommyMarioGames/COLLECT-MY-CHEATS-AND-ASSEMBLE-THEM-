@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const codes = ["lookrappturegogetmeafuckingbeer", "noooomarlownotagain", "pierplottime", "waitmarioisalive", "killmarlow"]; // your real codes
+const codes = ["lookrappturegogetmeafuckingbeer", "noooomarlownotagain", "pierplottime", "waitmarioisalive", "killmarlow", "goodgamewellplayed"]; // your real codes
 
 app.post("/check", (req, res) => {
     const { level, input } = req.body;
